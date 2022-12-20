@@ -12,7 +12,7 @@ class User(Base):
     __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, ForeignKey('comment.user_id'), primary_key=True)
+    id = Column(Integer , primary_key=True)
     username = Column(String(250), nullable=False)
     mail = Column(String(250), nullable=False)
     password = Column(nullable=False)
@@ -24,14 +24,17 @@ class post(Base):
     date = Column(String)
     comment = Column(String(200), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship(User)
 
 class Comment(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
     date = Column(String)
     text = Column(String(200), nullable=False)
-    user_id = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship(User)
     post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
+    
 
 
     def to_dict(self):
