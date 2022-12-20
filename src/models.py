@@ -12,29 +12,27 @@ class User(Base):
     __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
-    user_id = Column(Integer, ForeignKey('media.post_id'), primary_key=True)
-    name = Column(String(250), nullable=False)
-    last_name = Column(String(250), nullable=False)
+    id = Column(Integer, ForeignKey('comment.user_id'), primary_key=True)
+    username = Column(String(250), nullable=False)
     mail = Column(String(250), nullable=False)
-    age = Column(Integer, nullable=True)
+    password = Column(nullable=False)
 
-class media(Base):
-    __tablename__ = 'media'
-    post_id = Column(Integer, ForeignKey('post.likes'), ForeignKey('post.save'), ForeignKey('comment.text_comment'), primary_key=True)
+class post(Base):
+    __tablename__ = 'post'
+    id = Column(Integer, primary_key=True)
     picture = Column(String)
-    date_post = Column(String)
-    comment_post = Column(String(200), nullable=False)
+    date = Column(String)
+    comment = Column(String(200), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
 
 class Comment(Base):
     __tablename__ = 'comment'
-    user_id = Column(Integer, primary_key=True)
-    comment_date = Column(String)
-    text_comment = Column(String(200), ForeignKey('post.likes'), nullable=False)
+    id = Column(Integer, primary_key=True)
+    date = Column(String)
+    text = Column(String(200), nullable=False)
+    user_id = Column(Integer, nullable=False)
+    post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
 
-class Post(Base):
-    __tablename__ = 'post'
-    likes = Column(Integer, primary_key=True)
-    save = Column(String)
 
     def to_dict(self):
         return {}
